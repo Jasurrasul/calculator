@@ -1,28 +1,28 @@
-name: CI   # Namnet på din workflow som visas i GitHub Actions
+name: CI
 
 on:
-  push:                # När körs workflown?
-    branches: [ "master" ]   # Körs vid push till grenen "master"
-  pull_request:        # Körs även vid pull request
-    branches: [ "master" ]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch: {}   # <-- gör att du kan starta workflowet manuellt
 
 jobs:
-  build:               # Ett jobb heter "build"
-    runs-on: ubuntu-latest   # Jobbet körs på en virtuell Linux-maskin
-
-    steps:             # Steg som ska köras i ordning
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout repository
-        uses: actions/checkout@v4   # Klona ditt repo till den virtuella maskinen
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'   # Välj Java-distribution
-          java-version: '17'        # Sätt version
-          cache: 'gradle'           # Cacha Gradle för snabbare byggen
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
 
       - name: Make Gradle wrapper executable (Linux/macOS)
-        run: chmod +x ./gradlew     # Gör gradlew körbar (behövs i Linux)
+        run: chmod +x ./gradlew
 
       - name: Run tests
-        run: ./gradlew test --no-daemon  # Kör testerna
+        run: ./gradlew test --no-daemon
